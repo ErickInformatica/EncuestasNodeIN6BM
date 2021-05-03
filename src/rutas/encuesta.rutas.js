@@ -11,6 +11,6 @@ api.put('/agregarComentario/:idEncuesta', md_autenticacion.ensureAuth, encuestaC
 api.put('/editarComentario/:idEncuesta/:idComentario', md_autenticacion.ensureAuth, encuestaControlador.editarComentarioEncuesta);
 api.get('/obtenerComentario/:idEncuesta/:idComentario', md_autenticacion.ensureAuth, encuestaControlador.obtenerComentario);
 api.delete('/eliminarComentario/:idComentario', md_autenticacion.ensureAuth, encuestaControlador.eliminarComentario);
-api.post('/obtenerComentarioTexto', md_autenticacion.ensureAuth, encuestaControlador.obtenerComenarioPorTexto);
+api.post('/obtenerComentarioTexto/:idEncuesta', md_autenticacion.ensureAuth, encuestaControlador.obtenerComenarioPorTexto);
 
 module.exports = api;

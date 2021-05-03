@@ -15,7 +15,9 @@ api.get('/obtenerUsuarios', usuarioControlador.obtenerUsuarios);
 api.get('/obtenerUsuarioId/:idUsuario', usuarioControlador.obtenerUsuarioID);
 api.post('/login', usuarioControlador.login);
 api.put('/editarUsuario/:idUsuario', md_autenticacion.ensureAuth, usuarioControlador.editarUsuario);
+api.put('/editarUsuarioAdmin/:idUsuario', md_autenticacion.ensureAuth, usuarioControlador.editarUsuarioADMIN);
 api.delete('/eliminarUsuario/:idUsuario', md_autenticacion.ensureAuth, usuarioControlador.eliminarUsuario);
+api.delete('/eliminarUsuarioAdmin/:idUsuario', md_autenticacion.ensureAuth, usuarioControlador.eliminarUsuarioAdmin);
 
 
 

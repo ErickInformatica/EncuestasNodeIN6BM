@@ -1,6 +1,7 @@
 'use strict'
 
 var Encuesta = require('../modelos/encuesta.model');
+var mongoose = require('mongoose')
 
 function agregarEncuesta(req, res) {
     var params = req.body;
@@ -89,9 +90,13 @@ function eliminarComentario(req, res) {
 
 function obtenerComenarioPorTexto(req, res) {
     var bodyTextoComentario = req.body.textoComentario;
+    var encuestaId = req.params.idEncuesta;
 
 
-    Encuesta.aggregate([        
+    Encuesta.aggregate([ 
+        {
+            $match: { "_id": mongoose.Types.ObjectId(encuestaId) }
+        },
         {
             $unwind: "$listaComentarios" //
         },
@@ -110,14 +115,6 @@ function obtenerComenarioPorTexto(req, res) {
         console.log(err);
         return res.status(200).send({ ok })
     })
-
-    /* Encuesta.find({ "listaComentarios.textoComentario": { $regex: bodyTextoComentario, $options: 'i' } }, { "listaComentarios.$": 1 } ,(err, encuestasEncontradas)=>{
-        console.log(err);
-        if(err) return res.status(500).send({ mensaje: 'Error en la peticion de Comentario' });
-        if(!encuestasEncontradas) return res.status(500).send({ mensaje: 'Error al obtener los comentarios' });
-
-        return res.status(200).send({ encuestasEncontradas })
-    }) */
 }
 
 module.exports = {

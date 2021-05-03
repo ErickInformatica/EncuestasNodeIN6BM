@@ -22,7 +22,7 @@ function ejemplo(req, res) {
 function registrar(req, res) {
     var usuarioModel = new Usuario();
     var params = req.body;
-
+    console.log(params);
     if (params.usuario && params.email && params.password) {
         usuarioModel.nombre = params.nombre;
         usuarioModel.usuario = params.usuario;
@@ -134,11 +134,48 @@ function editarUsuario(req, res) {
     
 }
 
+function editarUsuarioADMIN(req, res) {
+    var idUsuario = req.params.idUsuario;
+    var params = req.body;
+
+    // BORRAR LA PROPIEDAD DE PASSWORD PARA QUE NO SE PUEDA EDITAR
+    delete params.password;
+
+    if(req.user.rol != "ROL_ADMIN"){
+        return res.status(500).send({ mensaje: "Solo el Administrador puede editarlos" })
+    }
+
+    Usuario.findByIdAndUpdate(idUsuario, params, { new: true }, (err, usuarioActualizado)=>{
+        if(err) return res.status(500).send({ mensaje: 'Error en la peticion' });
+        if(!usuarioActualizado) return res.status(500).send({ mensaje: 'No se ha podido actualizar al Usuario' });
+        // usuarioActualizado.password = undefined;
+        return res.status(200).send({ usuarioActualizado });
+    })
+
+    
+}
+
+
 function eliminarUsuario(req, res) {
     const idUsuario = req.params.idUsuario;
 
     if(idUsuario != req.user.sub){
         return res.status(500).send({ mensaje: 'No posee los permisos para eliminar a este Usuario.' })
+    }
+
+    Usuario.findByIdAndDelete(idUsuario, (err, usuarioEliminado)=>{
+        if(err) return res.status(500).send({ mensaje: 'Error en la peticion de Eliminar' });
+        if(!usuarioEliminado) return res.status(500).send({ mensaje: 'Error al eliminar el usuario.' });
+
+        return res.status(200).send({ usuarioEliminado });
+    })
+}
+
+function eliminarUsuarioAdmin(req, res) {
+    const idUsuario = req.params.idUsuario;
+
+    if(req.user.rol != 'ROL_ADMIN'){
+        return res.status(500).send({mensaje: 'Solo puede eliminar el Administrador.'})
     }
 
     Usuario.findByIdAndDelete(idUsuario, (err, usuarioEliminado)=>{
@@ -156,5 +193,7 @@ module.exports = {
     obtenerUsuarioID,
     login,
     editarUsuario,
-    eliminarUsuario
+    eliminarUsuario,
+    editarUsuarioADMIN,
+    eliminarUsuarioAdmin
 }
