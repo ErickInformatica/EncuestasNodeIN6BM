@@ -120,7 +120,7 @@ function obtenerComenarioPorTexto(req, res) {
 function obtenerEncuesta(req, res) {
     var idEncuesta = req.params.idEncuesta;
 
-    Encuesta.findById(idEncuesta).populate('creadorEncuesta', 'usuario email imagen').exec((err, encuestaEncontrada)=>{
+    Encuesta.findById(idEncuesta).populate('creadorEncuesta listaComentarios.idUsuarioComentario', 'usuario email imagen').exec((err, encuestaEncontrada)=>{
         if(err) return res.status(500).send({ mensaje: 'Error en la peticion de Encuesta'});
         if(!encuestaEncontrada) return res.status(500).send({ mensaje: 'Error al obtener la Encuesta'});
         return res.status(200).send({ encuestaEncontrada })
