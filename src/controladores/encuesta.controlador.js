@@ -44,7 +44,7 @@ function agregarComentarioEncuesta(req, res) {
     var encuestaID = req.params.idEncuesta;
     var params = req.body;
 
-    Encuesta.findByIdAndUpdate(encuestaID, { $push: { listaComentarios: { textoComentario: params.comentario, idUsuarioComentario: req.user.sub } } },
+    Encuesta.findByIdAndUpdate(encuestaID, { $push: { listaComentarios: { textoComentario: params.textoComentario, idUsuarioComentario: req.user.sub } } },
         {new: true}, (err, comentarioAgregado)=>{
             if (err) return res.status(500).send({ mensaje: 'Error en la peticion del comentario' });
             if(!comentarioAgregado) return res.status(500).send({ mensaje: 'Error al agregar el comentario a la encuesta' });
@@ -117,6 +117,16 @@ function obtenerComenarioPorTexto(req, res) {
     })
 }
 
+function obtenerEncuesta(req, res) {
+    var idEncuesta = req.params.idEncuesta;
+
+    Encuesta.findById(idEncuesta).populate('creadorEncuesta', 'usuario email imagen').exec((err, encuestaEncontrada)=>{
+        if(err) return res.status(500).send({ mensaje: 'Error en la peticion de Encuesta'});
+        if(!encuestaEncontrada) return res.status(500).send({ mensaje: 'Error al obtener la Encuesta'});
+        return res.status(200).send({ encuestaEncontrada })
+    })
+}
+
 module.exports = {
     agregarEncuesta,
     obtenerEncuestas,
@@ -124,5 +134,6 @@ module.exports = {
     editarComentarioEncuesta,
     obtenerComentario,
     eliminarComentario,
-    obtenerComenarioPorTexto
+    obtenerComenarioPorTexto,
+    obtenerEncuesta
 }
