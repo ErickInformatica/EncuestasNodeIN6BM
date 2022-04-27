@@ -4,12 +4,22 @@
 const Usuario = require('../modelos/usuario.model');
 const bcrypt = require("bcrypt-nodejs");
 const jwt = require('../servicios/jwt');
+const axios = require('axios').default;
 
 // FUNCION EJEMPLO
 // Otra forma de exportar y trabajar.
 // exports.ejemplo = (req, res) => {
 //     res.status(200).send({ mensaje: 'Hola, soy un ejemplo! :D' })
 // }
+
+function getWeather(req, res) {
+    axios.get('https://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=231929b4648359965f80249331fb8256')
+        .then(resp =>{
+            console.log(resp.data);
+            return res.status(200).send({weather: resp.data})
+        })
+}
+
 function ejemplo(req, res) {
     if (req.user.rol === 'ROL_USUARIO') { 
         res.status(200).send({ mensaje: `Hola, mi nombre es ${req.user.rol} ` }) 
@@ -195,5 +205,6 @@ module.exports = {
     editarUsuario,
     eliminarUsuario,
     editarUsuarioADMIN,
-    eliminarUsuarioAdmin
+    eliminarUsuarioAdmin,
+    getWeather
 }
