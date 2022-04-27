@@ -12,6 +12,17 @@ const axios = require('axios').default;
 //     res.status(200).send({ mensaje: 'Hola, soy un ejemplo! :D' })
 // }
 
+function getOneCallWeather(req, res) {
+    let lat = req.params.lat;
+    let lon = req.params.lon;
+    let appid = req.params.appid;
+
+    axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely&appid=${appid}`)
+        .then(resp => {
+            return res.status(200).send({weather: resp.data})
+        })
+}
+
 function getWeather(req, res) {
     let lat = req.params.lat;
     let lon = req.params.lon;
@@ -210,5 +221,6 @@ module.exports = {
     eliminarUsuario,
     editarUsuarioADMIN,
     eliminarUsuarioAdmin,
-    getWeather
+    getWeather,
+    getOneCallWeather
 }
