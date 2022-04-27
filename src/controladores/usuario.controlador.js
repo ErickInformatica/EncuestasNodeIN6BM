@@ -13,11 +13,13 @@ const axios = require('axios').default;
 // }
 
 function getWeather(req, res) {
-    let params = req.body;
+    let lat = req.params.lat;
+    let lon = req.params.lon;
+    let appid = req.params.appid;
 
-    axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${params.lat}&lon=${params.lon}&appid=${params.appid}`)
+    axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${appid}`)
         .then(resp =>{
-            console.log(resp.data);
+            
             return res.status(200).send({weather: resp.data})
         })
 }
