@@ -80,7 +80,7 @@ function eliminarComentario(req, res) {
     var comentarioId = req.params.idComentario;
    
     Encuesta.findOneAndUpdate({ "listaComentarios._id" : comentarioId}, { $pull: { listaComentarios : { _id: comentarioId } } },
-    {new: true, useFindAndModify: false},(err, comentarioEliminado)=>{
+    {new: true, useFindAndModify: false, projection},(err, comentarioEliminado)=>{
         if(err) return res.status(500).send({mensaje: 'Error en la peticion de Comentario'});
         if(!comentarioEliminado) return res.status(500).send({ mensaje: 'Error al eliminar el Comentario' });
 

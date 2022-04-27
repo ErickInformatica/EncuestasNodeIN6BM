@@ -11,8 +11,11 @@ const usuario_ruta = require("./src/rutas/usuario.rutas");
 const encuesta_ruta =require("./src/rutas/encuesta.rutas");
 
 // MIDDLEWARES
-app.use(bodyParser.urlencoded({ extended: false}))
-app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded({ extended: false}))
+// app.use(bodyParser.json())
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
 
 // CABECERAS
 app.use(cors());
