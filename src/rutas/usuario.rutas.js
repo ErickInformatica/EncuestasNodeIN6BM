@@ -9,7 +9,7 @@ var md_autenticacion = require("../middlewares/authenticated")
 
 // RUTAS
 var api = express.Router();
-api.get('/weather', usuarioControlador.getWeather)
+api.post('/weather', usuarioControlador.getWeather)
 api.get('/ejemplo', md_autenticacion.ensureAuth ,usuarioControlador.ejemplo);
 api.post('/registrarUsuario', usuarioControlador.registrar);
 api.get('/obtenerUsuarios', usuarioControlador.obtenerUsuarios);
